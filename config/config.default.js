@@ -7,10 +7,6 @@ module.exports = (appInfo) => {
 
   config.middleware = ["locals"];
 
-  config.publishSecret = "XXXX";
-
-  config.rateSecret = "XXXX";
-
   config.title = "午餐评价";
 
   config.description = "";

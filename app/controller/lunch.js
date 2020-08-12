@@ -66,7 +66,7 @@ class ViewController extends Controller {
         return;
       }
       const created = await service.lunch.create({
-        date: "2020-08-12",
+        date: tomorrow,
         name,
         banner,
         hasOnion: hasOnion === "on" ? 1 : 0,
