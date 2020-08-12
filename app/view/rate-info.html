@@ -1,0 +1,112 @@
+{% extends "./base.html" %}
+
+<!-- Body -->
+{% block body %}
+<div>
+  {% if lunch %}
+  <form id="js_rateForm" action="#">
+    <h3 class="text-center">{{ lunch.name }}</h3>
+    <p class="text-center">{{ today }}</p>
+    <h3 class="text-center">
+      <span class="badge">评分结束</span>
+    </h3>
+    {% if lunch.banner %}
+    <img src="{{ lunch.banner }}" alt="" />
+    {% endif %}
+
+    <div class="card">
+      <div class="card-header text-success">辅料表:</div>
+      <div class="card-body">
+        <fieldset class="form-group">
+          <span>葱: </span>
+          {% if lunch.hasOnion %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>姜: </span>
+          {% if lunch.hasGinger %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>蒜: </span>
+          {% if lunch.hasGarlic %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>花椒: </span>
+          {% if lunch.hasPepper %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group mb0">
+          <span>盐量: </span>
+          <span class="pull-right badge success">{{ lunch.saltLevel }}</span>
+        </fieldset>
+      </div>
+    </div>
+    <br />
+
+    <div class="card">
+      <div class="card-header text-danger">
+        <span>评价:</span>
+        <b class="text-secondary pull-right">得分: {{ lunch.score }}</b>
+      </div>
+      <div class="card-body">
+        <fieldset class="form-group">
+          <span>看起来: </span>
+          <span class="pull-right">{{ lunch.color }}分</span>
+        </fieldset>
+        <fieldset class="form-group">
+          <span>吃起来: </span>
+          <span class="pull-right">{{ lunch.smell }}分</span>
+        </fieldset>
+        <fieldset class="form-group">
+          <span>饭量: </span>
+          <span class="pull-right">{{ lunch.quantity }}分</span>
+        </fieldset>
+        <fieldset class="form-group">
+          <span>整体感觉: </span>
+          <span class="pull-right">{{ lunch.comfort }}分</span>
+        </fieldset>
+        <fieldset class="form-group mb0">
+          <span>明天吃: </span>
+          <div class="pull-right">
+            {% for item in lunch.tomorrow %}
+            <span class="badge danger">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <br />
+  </form>
+  {% else %}
+  <div class="text-center">
+    <p>{{ today }}</p>
+    <br />
+    <br />
+    <p>
+      <span style="font-size: 50px;">👨🏻‍💻</span>
+    </p>
+    <p>今天的他没做饭,</p>
+    <p>可能是太累了吧~</p>
+  </div>
+  {% endif %}
+</div>
+<!---->
+{% endblock %}

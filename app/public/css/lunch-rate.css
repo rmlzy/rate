@@ -1,0 +1,46 @@
+body {
+  padding: 10px;
+  background: #f0f0f0 url("/public/img/bg.jpg");
+}
+.lunch-rate {
+  margin: 0 auto;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 15px;
+  border-radius: 4px;
+  min-height: calc(100vh - 20px);
+}
+.card-body label {
+  padding: 0;
+  text-align: left;
+}
+.mb0 {
+  margin-bottom: 0;
+}
+.f14 {
+  font-size: 14px;
+}
+.modal-visible {
+  visibility: visible;
+  opacity: 1;
+}
+.modal-visible .modal-bg {
+  visibility: visible;
+}
+.modal-visible .modal-body {
+  top: 30%;
+}
+.form-group .paper-switch-tile {
+  margin: 0 0 5px 0;
+  transform: none;
+}
+.form-group .paper-switch-tile-card div {
+  line-height: 2;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pull-right {
+  float: right !important;
+}

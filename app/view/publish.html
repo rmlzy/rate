@@ -1,0 +1,144 @@
+{% extends "./base.html" %}
+
+<!-- Body -->
+{% block body %}
+<div>
+  <form id="js_publishForm" action="#">
+    <p class="text-center">明天是: {{ tomorrow }}</p>
+    <input class="input-block" name="code" style="width: 100%;" type="text" placeholder="请输入授权码" />
+    <br />
+    <input class="input-block" name="name" style="width: 100%;" type="text" placeholder="请输入菜名" />
+    <br />
+    <div class="card">
+      <div class="card-header text-success">辅料表:</div>
+      <div class="card-body">
+        <fieldset class="form-group">
+          <label for="js_onion" class="paper-switch-label">葱:</label>
+          <label class="paper-switch pull-right">
+            <input id="js_onion" name="hasOnion" type="checkbox" />
+            <span class="paper-switch-slider"></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label for="js_ginger" class="paper-switch-label">姜:</label>
+          <label class="paper-switch pull-right">
+            <input id="js_ginger" name="hasGinger" type="checkbox" />
+            <span class="paper-switch-slider"></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label for="js_garlic" class="paper-switch-label">蒜:</label>
+          <label class="paper-switch pull-right">
+            <input id="js_garlic" name="hasGarlic" type="checkbox" />
+            <span class="paper-switch-slider"></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label for="js_pepper" class="paper-switch-label">花椒:</label>
+          <label class="paper-switch pull-right">
+            <input id="js_pepper" name="hasPepper" type="checkbox" />
+            <span class="paper-switch-slider"></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <legend>盐:</legend>
+          <label class="paper-radio">
+            <input type="radio" name="saltLevel" value="一丢丢" />
+            <span>一丢丢</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="saltLevel" value="极少" />
+            <span>极少</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="saltLevel" value="适中" />
+            <span>适中</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="saltLevel" value="大量" />
+            <span>大量</span>
+          </label>
+        </fieldset>
+
+        <div class="form-group">
+          <label>提示</label>
+          <textarea class="no-resize" name="tips" style="width: 100%;" placeholder="请输入爱心提示"></textarea>
+        </div>
+      </div>
+    </div>
+    <br />
+
+    <button id="js_submitBtn" type="submit" class="btn-block">提交</button>
+  </form>
+
+  <div id="js_modal" class="modal">
+    <label class="modal-bg"></label>
+    <div class="modal-body">
+      <label class="btn-close">X</label>
+      <h4 class="modal-title"></h4>
+      <p class="modal-text"></p>
+      <label class="modal-ok">OK!</label>
+    </div>
+  </div>
+</div>
+<!---->
+{% endblock %}
+
+<!-- Foot -->
+{% block foot %}
+<script>
+  $(document).ready(function () {
+    var $modal = $("#js_modal");
+
+    $("#js_publishForm").on("submit", function (evt) {
+      evt.preventDefault();
+      var fd = $("#js_publishForm").serializeJSON();
+      if (!fd.code) {
+        showModal("🧐🧐🧐", "请输入授权码!");
+        return;
+      }
+      if (!fd.name) {
+        showModal("🧐🧐🧐", "请输入菜名!");
+        return;
+      }
+      if (!fd.saltLevel) {
+        showModal("🧐🧐🧐", "请选择盐量!");
+        return;
+      }
+      $.ajax({
+        type: "POST",
+        url: "/api/publish",
+        data: fd,
+        success: function (res) {
+          if (!res.success) {
+            showModal("🧐🧐🧐", res.message);
+            return;
+          }
+          showModal("🤓🤓🤓", "提交成功了~");
+          $("#js_submitBtn").addClass("disabled").attr("disabled", "disabled");
+        },
+      });
+    });
+
+    $modal.find(".btn-close, .modal-ok").on("click", function () {
+      closeModal();
+    });
+
+    function showModal(title, text) {
+      $modal.find(".modal-title").text(title);
+      $modal.find(".modal-text").text(text);
+      $modal.addClass("modal-visible");
+    }
+
+    function closeModal() {
+      $modal.find(".modal-title").text("");
+      $modal.find(".modal-text").text("");
+      $modal.removeClass("modal-visible");
+    }
+  });
+</script>
+{% endblock %}

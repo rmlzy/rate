@@ -1,0 +1,218 @@
+{% extends "./base.html" %}
+
+<!-- Body -->
+{% block body %}
+<div>
+  <form id="js_rateForm" action="#">
+    <h3 class="text-center">{{ lunch.name }}</h3>
+    <p class="text-center">{{ today }}</p>
+    {% if lunch.banner %}
+    <img src="{{ lunch.banner }}" alt="" />
+    {% endif %}
+    <p class="text-muted">{{ lunch.tips }}</p>
+
+    <div class="card">
+      <div class="card-header text-success">辅料表:</div>
+      <div class="card-body">
+        <fieldset class="form-group">
+          <span>葱: </span>
+          {% if lunch.hasOnion %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>姜: </span>
+          {% if lunch.hasGinger %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>蒜: </span>
+          {% if lunch.hasGarlic %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group">
+          <span>花椒: </span>
+          {% if lunch.hasPepper %}
+          <span class="pull-right badge success">是</span>
+          {% else %}
+          <span class="pull-right badge">否</span>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-group mb0">
+          <span>盐量: </span>
+          <span class="pull-right badge success">{{ lunch.saltLevel }}</span>
+        </fieldset>
+      </div>
+    </div>
+    <br />
+
+    <div class="card">
+      <div class="card-header text-danger">评价:</div>
+      <div class="card-body">
+        <fieldset class="form-group">
+          <legend>看起来:</legend>
+          <label class="paper-radio">
+            <input type="radio" name="color" value="0" />
+            <span>🤮 <span class="text-danger">有点丑哦</span> (+0分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="color" value="10" />
+            <span>😋 有点一般呀 (+10分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="color" value="25" />
+            <span>🎉 <span class="text-success">棒呆!!</span> (+25分)</span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <legend>吃起来:</legend>
+          <label class="paper-radio">
+            <input type="radio" name="smell" value="0" />
+            <span>🤭 <span class="text-danger">不太行哦</span> (+0分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="smell" value="10" />
+            <span>🥴 有点一般呀 (+10分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="smell" value="25" />
+            <span>🥰 <span class="text-success">棒呆!!</span> (+25分)</span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <legend>饭量:</legend>
+          <label class="paper-radio">
+            <input type="radio" name="quantity" value="0" />
+            <span>🌑 <span class="text-danger">太少了, 不够吃!!</span> (+0分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="quantity" value="10" />
+            <span>🌗 有点一般呀 (+10分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="quantity" value="25" />
+            <span>🌕 <span class="text-success">棒呆!!</span> (+25分)</span>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <legend>整体感觉:</legend>
+          <label class="paper-radio">
+            <input type="radio" name="comfort" value="0" />
+            <span>😔 <span class="text-danger">不太行哦</span> (+0分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="comfort" value="10" />
+            <span>😏 有点一般呀 (+10分)</span>
+          </label>
+          <label class="paper-radio">
+            <input type="radio" name="comfort" value="25" />
+            <span>😆 <span class="text-success">Nice!!</span> (+25分)</span>
+          </label>
+        </fieldset>
+      </div>
+    </div>
+    <br />
+
+    <div class="card">
+      <div class="card-header text-primary">明天吃什么:</div>
+      <div class="card-body">
+        <fieldset class="form-group mb0">
+          <div class="row mb0">
+            {% for item in cookbook %}
+            <div class="col-4 col text-center" style="padding: 0;">
+              <label class="paper-switch-tile">
+                <input name="tomorrow[]" type="checkbox" value="{{ item }}" />
+                <div class="paper-switch-tile-card border">
+                  <div class="paper-switch-tile-card-front border background-warning f14">{{ item }}</div>
+                  <div class="paper-switch-tile-card-back border background-secondary f14">{{ item }}</div>
+                </div>
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <br />
+
+    <button id="js_submitBtn" type="submit" class="btn-block">发送给他</button>
+  </form>
+
+  <div id="js_modal" class="modal">
+    <label class="modal-bg"></label>
+    <div class="modal-body">
+      <label class="btn-close">X</label>
+      <h4 class="modal-title"></h4>
+      <p class="modal-text"></p>
+      <label class="modal-ok">OK!</label>
+    </div>
+  </div>
+</div>
+<!---->
+{% endblock %}
+
+<!-- Foot -->
+{% block foot %}
+<script>
+  $(document).ready(function () {
+    var $modal = $("#js_modal");
+
+    $("#js_rateForm").on("submit", function (evt) {
+      evt.preventDefault();
+      var fd = $("#js_rateForm").serializeJSON();
+      if (!fd.color || !fd.smell || !fd.quantity || !fd.comfort || !fd.tomorrow) {
+        showModal("🧐🧐🧐", "老婆, 你没填完~");
+        return;
+      }
+      if (fd.tomorrow.length > 2) {
+        showModal("😤😤😤", "老婆, 做" + fd.tomorrow.length + "个菜, 你想累死我吗?");
+        return;
+      }
+      $.ajax({
+        type: "POST",
+        url: "/api/rate",
+        data: fd,
+        success: function (res) {
+          if (!res.success) {
+            showModal("🧐🧐🧐", res.message);
+            return;
+          }
+          showModal("🤓🤓🤓", "亲亲, 这边已经收到了你的评价哦~");
+          $("#js_submitBtn").addClass("disabled").attr("disabled", "disabled");
+        },
+      });
+    });
+
+    $modal.find(".btn-close, .modal-ok").on("click", function () {
+      closeModal();
+    });
+
+    function showModal(title, text) {
+      $modal.find(".modal-title").text(title);
+      $modal.find(".modal-text").text(text);
+      $modal.addClass("modal-visible");
+    }
+
+    function closeModal() {
+      $modal.find(".modal-title").text("");
+      $modal.find(".modal-text").text("");
+      $modal.removeClass("modal-visible");
+    }
+  });
+</script>
+{% endblock %}
