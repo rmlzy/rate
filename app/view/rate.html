@@ -150,6 +150,12 @@
     </div>
     <br />
 
+    <input class="input-block" name="code" style="width: 100%;" type="text" placeholder="授权码" />
+    <br />
+
+    <textarea class="no-resize" name="remark" maxlength="200" style="width: 100%;" placeholder="留言给他"></textarea>
+    <br />
+
     <button id="js_submitBtn" type="submit" class="btn-block">发送给他</button>
   </form>
 
@@ -175,6 +181,10 @@
     $("#js_rateForm").on("submit", function (evt) {
       evt.preventDefault();
       var fd = $("#js_rateForm").serializeJSON();
+      if (!fd.code) {
+        showModal("🧐🧐🧐", "老婆, 填一下授权码~");
+        return;
+      }
       if (!fd.color || !fd.smell || !fd.quantity || !fd.comfort || !fd.tomorrow) {
         showModal("🧐🧐🧐", "老婆, 你没填完~");
         return;

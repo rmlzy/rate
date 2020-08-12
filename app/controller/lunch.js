@@ -17,11 +17,13 @@ class ViewController extends Controller {
       cookbook: [
         "西红柿炒蛋",
         "肉末茄子",
+        "凉拌黄瓜",
         "酸辣土豆丝",
         "😝想吃肉",
         "酸辣白菜",
         "豆角炒豆角",
         "丝瓜炒丝瓜",
+        "水果套餐",
         "你自由发挥吧🤪",
       ],
       lunch: null,
@@ -84,10 +86,19 @@ class ViewController extends Controller {
   }
 
   async rate() {
-    const { ctx, service } = this;
-    const { color, smell, quantity, comfort, tomorrow } = ctx.request.body;
+    const { ctx, service, config } = this;
+    const { code, color, smell, quantity, comfort, tomorrow, remark } = ctx.request.body;
     const today = dayjs().format("YYYY-MM-DD");
-    // TODO: 校验时间
+    const hour = dayjs().hour();
+    if (config.rateSecret !== code) {
+      ctx.body = { success: false, message: "授权码错误, 你无权提交~" };
+      return;
+    }
+    // 11 点到 13 点可以提交
+    if (!(hour >= 11 && hour <= 13)) {
+      ctx.body = { success: false, message: "老婆, 还没到评价时间哦~" };
+      return;
+    }
     try {
       const existed = await service.lunch.findOne({ where: { date: today } });
       if (!existed) {
@@ -107,6 +118,7 @@ class ViewController extends Controller {
           quantity: Number(quantity),
           comfort: Number(comfort),
           tomorrow: JSON.stringify(tomorrow),
+          remark,
         },
         { where: { date: today } }
       );
