@@ -95,7 +95,7 @@ class ViewController extends Controller {
       return;
     }
     // 11 点到 13 点可以提交
-    if (!(hour >= 11 && hour <= 13)) {
+    if (!(hour >= 11 && hour <= 18)) {
       ctx.body = { success: false, message: "老婆, 还没到评价时间哦~" };
       return;
     }
