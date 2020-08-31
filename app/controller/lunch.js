@@ -27,6 +27,8 @@ class ViewController extends Controller {
         "蒜薹炒鸡蛋",
         "白菜丸子",
         "想吃紫薯~",
+        "清蒸鸡",
+        "河南烩菜",
         "你自由发挥吧🤪",
       ],
       lunch: null,
